@@ -730,13 +730,9 @@ const addBank = async(req, res) => {
     let name_bank = req.body.name_bank;
     let name_user = req.body.name_user;
     let stk = req.body.stk;
-    let tp = req.body.tp;
-    let email = req.body.email;
-    let sdt = req.body.sdt;
-    let tinh = req.body.tinh;
     let chi_nhanh = req.body.chi_nhanh;
 
-    if (!auth || !name_bank || !name_user || !stk || !tp || !email || !sdt || !tinh || !chi_nhanh) {
+    if (!auth || !name_bank || !name_user || !stk || !chi_nhanh) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
@@ -744,7 +740,6 @@ const addBank = async(req, res) => {
         })
     }
     const [user] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `token` = ? ', [auth]);
-    let userInfo = user[0];
     if(!user) {
         return res.status(200).json({
             message: 'Failed',
@@ -753,8 +748,7 @@ const addBank = async(req, res) => {
         });
     };
     const [user_bank] = await connection.query('SELECT * FROM user_bank WHERE stk = ? ', [stk]);
-    const [user_bank2] = await connection.query('SELECT * FROM user_bank WHERE phone = ? ', [userInfo.phone]);
-    if (user_bank.length == 0 && user_bank2.length == 0) {
+    if (user_bank.length == 0) {
         let time = new Date().getTime();
         const sql = `INSERT INTO user_bank SET 
         phone = ?,
@@ -767,7 +761,7 @@ const addBank = async(req, res) => {
         tinh = ?,
         chi_nhanh = ?,
         time = ?`;
-        await connection.execute(sql, [userInfo.phone, name_bank, name_user, stk, tp, email, sdt, tinh, chi_nhanh, time]);
+        await connection.execute(sql, ['', name_bank, name_user, stk, '', '', '', '', chi_nhanh, time]);
         return res.status(200).json({
             message: 'Thêm ngân hàng thành công',
             status: true,
@@ -776,12 +770,6 @@ const addBank = async(req, res) => {
     } else if(user_bank.length > 0) {
         return res.status(200).json({
             message: 'Số tài khoản này đã tồn tại trong hệ thống',
-            status: false,
-            timeStamp: timeNow,
-        });
-    }  else if(user_bank2.length > 0) {
-        return res.status(200).json({
-            message: 'Tài khoản đã liên kết ngân hàng rồi',
             status: false,
             timeStamp: timeNow,
         });

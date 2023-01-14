@@ -170,6 +170,53 @@ const register = async(req, res) => {
 
 }
 
+const addAccount = async(req, res) => {
+    let now = new Date().getTime();
+    let { username, pwd } = req.body;
+    let id_user = randomNumber(10000, 99999);
+    let otp2 = randomNumber(100000, 999999);
+    let name_user = "Member" + randomNumber(10000, 99999);
+    let code = randomString(5) + randomNumber(10000, 99999);
+    let ip = ipAddress(req);
+    let time = timeCreate();
+
+    if (!username || !pwd) {
+        return res.status(200).json({
+            message: 'ERROR!!!',
+            status: false
+        });
+    }
+
+    if (username.length < 9 || username.length > 10 || !isNumber(username)) {
+        return res.status(200).json({
+            message: 'phone error',
+            status: false
+        });
+    }
+
+    try {
+        const [check_u] = await connection.query('SELECT * FROM users WHERE phone = ?', [username]);
+
+        if (check_u.length == 1 && check_u[0].veri == 1) {
+            return res.status(200).json({
+                message: 'Số điện thoại đã được đăng ký',
+                status: false
+            });
+        } else {
+            const sql = "INSERT INTO users SET id_user = ?,phone = ?,name_user = ?,password = ?,money = ?,code = ?,invite = ?,ctv = ?,veri = ?,otp = ?,ip_address = ?,status = ?,time = ?";
+            await connection.execute(sql, [id_user, username, name_user, md5(pwd), 0, code, '', '', 1, otp2, ip, 1, time]);
+            await connection.execute('INSERT INTO point_list SET phone = ?', [username]);
+            return res.status(200).json({
+                message: 'Register Sucess',
+                status: true
+            });
+        }
+    } catch (error) {
+        if (error) console.log(error);
+    }
+
+}
+
 const verifyCode = async(req, res) => {
     let phone = req.body.phone;
     let now = new Date().getTime();
@@ -326,6 +373,7 @@ const forGotPassword = async(req, res) => {
 module.exports = {
     login,
     register,
+    addAccount,
     loginPage,
     registerPage,
     forgotPage,

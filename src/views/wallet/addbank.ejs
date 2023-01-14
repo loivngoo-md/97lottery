@@ -67,31 +67,6 @@
                         </div>
                     </div>
                     <div data-v-7aa0f84a="" class="item">
-                        <div data-v-7aa0f84a="" class="lab">Thành phố</div>
-                        <div data-v-7aa0f84a="" class="input">
-                            <input data-v-7aa0f84a="" type="text" placeholder="Cần thiết điền" class="ipt" />
-                        </div>
-                    </div>
-                    <!---->
-                    <div data-v-7aa0f84a="" class="item">
-                        <div data-v-7aa0f84a="" class="lab">Email</div>
-                        <div data-v-7aa0f84a="" class="input">
-                            <input data-v-7aa0f84a="" type="text" placeholder="Cần thiết điền" class="ipt" />
-                        </div>
-                    </div>
-                    <div data-v-7aa0f84a="" class="item">
-                        <div data-v-7aa0f84a="" class="lab">Số điện thoại</div>
-                        <div data-v-7aa0f84a="" class="input">
-                            <input data-v-7aa0f84a="" type="text" placeholder="Cần thiết điền" class="ipt" />
-                        </div>
-                    </div>
-                    <div data-v-7aa0f84a="" class="item">
-                        <div data-v-7aa0f84a="" class="lab">Tỉnh</div>
-                        <div data-v-7aa0f84a="" class="input">
-                            <input data-v-7aa0f84a="" type="text" placeholder="Tỉnh" class="ipt" />
-                        </div>
-                    </div>
-                    <div data-v-7aa0f84a="" class="item">
                         <div data-v-7aa0f84a="" class="lab">Chi nhánh</div>
                         <div data-v-7aa0f84a="" class="input">
                             <input data-v-7aa0f84a="" maxlength="10" type="text" placeholder="Chi nhánh" class="ipt" />
@@ -152,12 +127,8 @@
             let name_bank = $('.ipt:eq(0)').val().trim();
             let name_user = $('.ipt:eq(1)').val().trim();
             let stk = $('.ipt:eq(2)').val().trim();
-            let tp = $('.ipt:eq(3)').val().trim();
-            let email = $('.ipt:eq(4)').val().trim();
-            let sdt = $('.ipt:eq(5)').val().trim();
-            let tinh = $('.ipt:eq(6)').val().trim();
-            let chi_nhanh = $('.ipt:eq(7)').val().trim();
-            if (name_bank && name_user && stk && tp && email && sdt && tinh && chi_nhanh) {
+            let chi_nhanh = $('.ipt:eq(3)').val().trim();
+            if (name_bank && name_user && stk && chi_nhanh) {
                 $.ajax({
                     type: "POST",
                     url: "/api/webapi/addBank",
@@ -165,16 +136,14 @@
                         name_bank: name_bank,
                         name_user: name_user,
                         stk: stk,
-                        tp: tp,
-                        email: email,
-                        sdt: sdt,
-                        tinh: tinh,
                         chi_nhanh: chi_nhanh
                     },
                     dataType: "json",
                     success: function (response) {
                         console.log(response);
                         alertMess(response.message, $(this));
+
+                        window.location.href = '/wallet/withdrawal';
                     }
                 });
             } else {
