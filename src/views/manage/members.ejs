@@ -34,8 +34,48 @@
           <!-- /.container-fluid -->
         </section>
 
-        <div class="form-group" style="text-align: center">
-          <input type="text" id="search" placeholder="Nhập thành viên bạn đang tìm kiếm" />
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-4 mb-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-member">
+                  Thêm thành viên
+                </button>
+
+                <div class="modal" tabindex="-1" id="modal-add-member" >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Thêm thành viên</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="item-form">
+                          <label for="input-phone">Số điện thoại</label>
+                          <input id="input-phone" type="text" class="form-control">
+                        </div>
+
+                        <div class="item-form mt-2">
+                          <label for="input-password">Mật khẩu</label>
+                          <input id="input-password" type="password" class="form-control">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-close-member" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary btn-add-member">Thêm</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <input type="text" id="search" placeholder="Nhập thành viên bạn đang tìm kiếm" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Main content -->
@@ -269,6 +309,70 @@
           if (response.status === true) return Render(response.datas);
         }
       });
+    });
+
+    function alertMess(text) {
+      let length = $('.alert-toast .msg').length;
+      if (length == 0) {
+          $('.alert-toast').append(
+              `
+              <div data-v-1dcba851="" class="msg">
+                  <div data-v-1dcba851="" class="msg-content" style=""> ${text} </div>
+              </div>
+              `
+          );
+          setTimeout(() => {
+              $('.msg').fadeOut();
+              setTimeout(() => {
+                  $('.alert-toast .msg').remove();
+              }, 100);
+          }, 1500);
+      }
+    }
+
+    function validateForm(phone, password, text) {
+        if (!phone || !password) {
+          alertMess(text);
+          return false;
+        } else {
+          return true;
+        }
+    }
+
+    $('.btn-add-member').click(function (e) { 
+      e.preventDefault();
+
+      let username = $('#input-phone').val().trim();
+      let password = $('#input-password').val().trim();
+      let status = validateForm(username, password, 'Vui lòng điền vào phần được cần thiết');
+      if (status) {
+          $('.van-overlay').fadeIn(10);
+          $.ajax({
+              type: "POST",
+              url: "/api/webapi/add-account",
+              data: {
+                  username: username,
+                  pwd: password,
+              },
+              dataType: "json", 
+              success: function (response) {
+                if (response.status === true) {
+                    $('.van-overlay').fadeOut(300);
+                    $('.Loading').fadeIn(10);
+                    setTimeout(() => {
+                        $('.Loading').fadeOut(10);
+                        alertMess(response.message);
+                    }, 100);
+                    $('.btn-close-member').click();
+
+                    window.location.reload();
+                } else {
+                    $('.van-overlay').fadeOut(300);
+                    alertMess(response.message);
+                }
+              }
+          });
+      }
     });
   </script>
 </body>
