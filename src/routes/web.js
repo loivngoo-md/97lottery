@@ -24,7 +24,7 @@ const initWebRouter = (app) => {
         return res.redirect('/home');
     });
     router.get('/home', homeController.homePage);
-    
+
     router.get('/checkIn', middlewareController, homeController.checkInPage);
     router.get('/checkDes', middlewareController, homeController.checkDes);
     router.get('/checkRecord', middlewareController, homeController.checkRecord);
@@ -52,7 +52,7 @@ const initWebRouter = (app) => {
     router.get('/newtutorial', homeController.newtutorial);
     router.get('/about/privacyPolicy', middlewareController, homeController.privacyPolicy);
     router.get('/about/riskAgreement', middlewareController, homeController.riskAgreement);
-    
+
     router.get('/myProfile', middlewareController, homeController.myProfilePage);
 
 
@@ -81,8 +81,8 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/register', accountController.register); // register
     router.post('/api/webapi/add-account', accountController.addAccount); // sent otp
     router.get('/api/webapi/GetUserInfo', middlewareController, userController.userInfo); // get info account
-    router.put('/api/webapi/change/userInfo',middlewareController, userController.changeUser); // get info account
-    router.put('/api/webapi/change/pass',middlewareController, userController.changePassword); // get info account
+    router.put('/api/webapi/change/userInfo', middlewareController, userController.changeUser); // get info account
+    router.put('/api/webapi/change/pass', middlewareController, userController.changePassword); // get info account
 
     // bet wingo
     router.post('/api/webapi/action/join', middlewareController, winGoController.betWinGo); // register
@@ -102,6 +102,7 @@ const initWebRouter = (app) => {
     router.get('/api/webapi/myTeam', middlewareController, userController.listMyTeam); // register
     router.get('/api/webapi/recharge/list', middlewareController, userController.listRecharge); // register
     router.get('/api/webapi/withdraw/list', middlewareController, userController.listWithdraw); // register
+    router.get('/api/webapi/bank_card/list', middlewareController, userController.listBankUserService); // register
     router.post('/api/webapi/recharge/check', middlewareController, userController.recharge2); // register
     router.post('/api/webapi/withdrawal', middlewareController, userController.withdrawal3); // register
     router.post('/api/webapi/callback_bank', middlewareController, userController.callback_bank); // register
@@ -201,8 +202,8 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/k3/listOrders', adminController.middlewareAdminController, adminController.listOrderOldK3); // get info account
     router.post('/api/webapi/admin/5d/editResult', adminController.middlewareAdminController, adminController.editResult); // get info account
     router.post('/api/webapi/admin/k3/editResult', adminController.middlewareAdminController, adminController.editResult2); // get info account
-    
-    return app.use('/', router); 
+
+    return app.use('/', router);
 }
 
 module.exports = {
