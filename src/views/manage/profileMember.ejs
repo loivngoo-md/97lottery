@@ -139,9 +139,51 @@
                                     </strong>
                                     <p class="text-muted" id="timeAddBank">Chưa có ngân hàng nào được thêm vào</p>
 
-                                    <a href="#" class="btn btn-primary btn-block">
-                                        <b style="text-transform: uppercase;">EDIT</b>
-                                    </a>
+                                    <button
+                                        id="btn-edit-bank"
+                                        data-target="#modal-edit-bank"
+                                        data-toggle="modal"
+                                        class="btn btn-primary btn-block"
+                                    >
+                                        <b>Chỉnh sửa</b>
+                                    </button>
+
+                                    <div class="modal fade" id="modal-edit-bank" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa thông tin ngân hàng</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input id="input-id-bank-info" type="hidden" name="">
+
+                                                    <div class="mb-2">
+                                                        <label for="input-bank-name">Tên ngân hàng</label>
+                                                        <input id="input-bank-name" type="text" placeholder="Cần thiết điền" class="form-control"/>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label for="input-account-name">Tên chủ tài khoản</label>
+                                                        <input id="input-account-name" type="text" placeholder="Cần thiết điền" oninput="value=value.replace(/[^a-zA-Z\s+$]/g,'').toUpperCase()" class="form-control" />
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label for="input-bank-number">Số tài khoản</label>
+                                                        <input id="input-bank-number" type="number" placeholder="Cần thiết điền" oninput="value=value.replace(/[^\d]/g,'')" class="form-control" />
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label for="input-chi-nhanh">Chi nhánh</label>
+                                                        <input id="input-chi-nhanh" maxlength="10" type="text" placeholder="Chi nhánh" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button type="button" class="btn btn-primary btn-submit-update-bank">Cập nhật</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -232,10 +274,20 @@
 
                 // bank
                 if (response.bank_user[0]) {
+                    $('#btn-edit-bank').disabled = false;
+
                     $('#name').text(response.bank_user[0].name_user);
                     $('#stk').text(response.bank_user[0].stk);
                     $('#location').text(response.bank_user[0].tinh + " - " + response.bank_user[0].tp);
                     $('#timeAddBank').text(timerJoin(response.bank_user[0].time));
+
+                    $('#input-id-bank-info').val(response.bank_user[0].id);
+                    $('#input-bank-name').val(response.bank_user[0].name_bank);
+                    $('#input-account-name').val(response.bank_user[0].name_user);
+                    $('#input-bank-number').val(response.bank_user[0].stk);
+                    $('#input-chi-nhanh').val(response.bank_user[0].tinh + " - " + response.bank_user[0].chi_nhanh);
+                } else {
+                    $('#btn-edit-bank').disabled = true;
                 }
             }
         });
@@ -621,6 +673,57 @@
             }
         });
         });
+
+        function alertMess(text, sic) {
+            $('body').append(
+                `
+                <div data-v-1dcba851="" class="msg">
+                    <div data-v-1dcba851="" class="msg-content v-enter-active v-enter-to" style=""> ${text} </div>
+                </div>
+                `
+            );
+            setTimeout(() => {
+                $('.msg .msg-content').removeClass('v-enter-active v-enter-to');
+                $('.msg .msg-content').addClass('v-leave-active v-leave-to');
+                setTimeout(() => {
+                    $('.msg').remove();
+                }, 100);
+                sic.removeClass('block-click');
+            }, 1000);
+        }
+        $('.btn-submit-update-bank').click(function(e) {
+            e.preventDefault();
+
+            let id = $('#input-id-bank-info').val().trim();
+            let name_bank = $('#input-bank-name').val().trim();
+            let name_user = $('#input-account-name').val().trim();
+            let stk = $('#input-bank-number').val().trim();
+            let chi_nhanh = $('#input-chi-nhanh').val().trim();
+
+            if (id && name_bank && name_user && stk && chi_nhanh) {
+                // $.ajax({
+                //     type: "POST",
+                //     url: "/api/webapi/addBank",
+                //     data: {
+                //         name_bank: name_bank,
+                //         name_user: name_user,
+                //         stk: stk,
+                //         chi_nhanh: chi_nhanh
+                //     },
+                //     dataType: "json",
+                //     success: function (response) {
+                //         console.log(response);
+                //         alertMess(response.message, $(this));
+
+                //         window.location.reload();
+                //     }
+                // });
+
+                window.location.reload();
+            } else {
+                alertMess('Vui lòng nhập đầy đủ thông tin', $(this));
+            }
+        })
     </script>
     <!-- BET-->
 </body>
