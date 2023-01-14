@@ -81,7 +81,7 @@
                             class="img c-row c-row-middle-center">
                             <img data-v-51f72da1="" height="22px" width="15px" src="/images/verifie.png" class="mobile"></span>
                             <input data-v-51f72da1="" type="number" id="otp" placeholder="Mã xác nhận">
-                            <button data-v-51f72da1="" class="otp">OTP</button>
+                            <button data-v-51f72da1="" class="otp">SEND OTP</button>
                         </div>
                     <div data-v-51f72da1="" class="tip">Không nhận được mã OTP ? Vui lòng liên hệ CSKH</div>
                     <div data-v-51f72da1="" class="item c-row c-row-center c-row-middle m-b-30">
@@ -148,6 +148,9 @@
             }
         }
 
+
+        $
+
         $('#submit').click(async (e) => { 
             e.preventDefault();
             let username = $('#username').val().trim();
@@ -189,6 +192,7 @@
         $('.otp').click(function (e) { 
             e.preventDefault();
             let phone = $('#username').val().trim();
+
             $(this).addClass('block-click');
             setTimeout(() => {
                 $(this).removeClass('block-click');

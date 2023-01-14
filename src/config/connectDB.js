@@ -1,10 +1,10 @@
 const mysql = require('mysql2/promise');
 
 const connection = mysql.createPool({
-    host: '192.168.8.188',
-    user: 'vnbc',
-    password: '123456',
-    database: 'vnbc'
+    host: 'localhost',
+    user: 'root',
+    password: 'secret',
+    database: 'lottery'
 });
 
 // const connection = mysql.createPool({
