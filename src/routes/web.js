@@ -103,10 +103,10 @@ const initWebRouter = (app) => {
     router.get('/api/webapi/recharge/list', middlewareController, userController.listRecharge); // register
     router.get('/api/webapi/withdraw/list', middlewareController, userController.listWithdraw); // register
     router.get('/api/webapi/bank_card/list', middlewareController, userController.listBankUserService); // register
+    router.post('/api/webapi/bank_card_list/:phone', middlewareController, userController.listBankUserServiceById); // register
     router.post('/api/webapi/recharge/check', middlewareController, userController.recharge2); // register
     router.post('/api/webapi/withdrawal', middlewareController, userController.withdrawal3); // register
     router.post('/api/webapi/callback_bank', middlewareController, userController.callback_bank); // register
-
     router.post('/api/webapi/search', middlewareController, userController.search); // register
 
 
@@ -191,10 +191,10 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/member/info', adminController.middlewareAdminController, adminController.userInfo); // get info account
     router.post('/api/webapi/admin/statistical', adminController.middlewareAdminController, adminController.statistical2); // get info account
 
-    router.patch('/api/webapi/admin/setPassword', adminController.setPassword); //set password for specify user
-    router.patch('/api/webapi/admin/updateUserPhone', adminController.updateUserPhone); //update user info phone
-    router.patch('/api/webapi/admin/updateUserRole', adminController.updateUserRole); //update user info role
-
+    router.post('/api/webapi/admin/setPassword', adminController.middlewareAdminController, adminController.setPassword); //set password for specify user
+    router.post('/api/webapi/admin/updateUserPhone', adminController.middlewareAdminController, adminController.updateUserPhone); //update user info phone
+    router.post('/api/webapi/admin/updateUserRole', adminController.middlewareAdminController, adminController.updateUserRole); //update user info role
+    router.post('/api/webapi/admin/updateBankUser', adminController.middlewareAdminController, userController.updateBankUser); // register
     router.post('/api/webapi/admin/banned', adminController.middlewareAdminController, adminController.banned); // get info account
 
 

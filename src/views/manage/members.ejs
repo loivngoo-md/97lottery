@@ -219,12 +219,9 @@
             <a class="btn btn-primary btn-sm confirm-btn" href="/admin/member/info/${data.phone}">
               <i class="fas fa-folder"></i> Profile
             </a>
-            <button class="btn btn-primary btn-sm confirm-btn" id="btn-edit-info" data-toggle="modal" data-target="#modal-edit-info">
+            <a class="btn btn-primary btn-sm confirm-btn" href="/admin/member/edit/${data.phone}">
               <i class="fa fa-pencil"></i> Chỉnh sửa
-            </button>
-
-            <button class="btn btn-primary btn-sm confirm-btn" data-toggle="modal" data-target="#modal-reset-password">
-              <i class="fas fa-key"></i>Reset password</button> 
+            </a>
 
             ${(data.status == 1) ? `<a class="btn btn-info btn-sm btn-danger" id="${data.id}" href="#">
             <i class="fas fa-pencil-alt"></i> Khóa

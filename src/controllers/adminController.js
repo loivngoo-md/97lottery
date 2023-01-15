@@ -1756,21 +1756,12 @@ const updateUserPhone = async (req, res) => {
 
     const {
         user_id,
-        phone
+        username
     } = req.body
 
-    if (!user_id || !phone) {
+    if (!user_id || !username) {
         return res.status(400).json({
             message: 'Missing fields.',
-            status: false,
-            timeStamp: timeNow,
-        });
-    }
-
-    const isExistPhone = await connection.query('SELECT * FROM users WHERE id_user = ?, phone = ? ', [user_id, phone]);
-    if (isExistPhone) {
-        return res.status(200).json({
-            message: 'Phone is existed.',
             status: false,
             timeStamp: timeNow,
         });
@@ -1784,7 +1775,7 @@ const updateUserPhone = async (req, res) => {
             timeStamp: timeNow,
         });
     }
-    await connection.query("UPDATE users set, phone = ? WHERE id_user = ?", [phone, user_id])
+    await connection.query("UPDATE users set name_user = ? WHERE id_user = ?", [username, user_id])
     return res.status(200).json({
         message: 'Cập  nhật thành công',
         status: true,
@@ -1814,7 +1805,7 @@ const updateUserRole = async (req, res) => {
             timeStamp: timeNow,
         });
     }
-    await connection.query("UPDATE users set level = ? WHERE id_user = ?", [level, phone, phone, user_id])
+    await connection.query("UPDATE users set level = ? WHERE id_user = ?", [level, user_id])
     return res.status(200).json({
         message: 'Cập  nhật thành công',
         status: true,
@@ -1839,8 +1830,6 @@ const setPassword = async (req, res) => {
             });
         }
         let userInfo = user[0];
-        console.log("User================================.>>>>>>>>", userInfo)
-        console.log(md5(password), userInfo['id_user'])
         await connection.query(`UPDATE users SET password = ? WHERE id_user = ?`, [md5(password), userInfo['id_user']]);
 
         return res.status(200).json({

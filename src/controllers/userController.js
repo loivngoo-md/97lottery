@@ -819,6 +819,69 @@ const listBankUserService = async (req, res) => {
     }
 }
 
+const listBankUserServiceById = async (req, res) => {
+    let phone = req.params.phone;
+
+    const [user] = await connection.query('SELECT `id_user` FROM users WHERE `phone` = ? ', [phone]);
+    if (!user) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    } else {
+        const [lisBankInfo] = await connection.query('SELECT * FROM user_bank WHERE `user_id` = ?', [user[0].id_user])
+        return res.status(200).json({
+            data: lisBankInfo,
+            user: user[0].id_user
+        });
+    }
+}
+
+const updateBankUser = async (req, res) => {
+
+    const {
+        id,
+        user_id,
+        stk,
+        name_bank,
+        name_user,
+        chi_nhanh,
+    } = req.body;
+    if (!user_id || !stk || !name_bank || !name_user || !chi_nhanh) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [bank_user] = await connection.query(`SELECT * from user_bank WHERE id = ?`, [id])
+    if (!bank_user[0]) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    console.log(bank_user[0]);
+    const sql = `UPDATE user_bank SET 
+        name_bank = ?,
+        name_user = ?,
+        stk = ?,
+        chi_nhanh = ?,
+        time = ?,
+        user_id = ?
+        WHERE id = ?`;
+    await connection.execute(sql, [name_bank, name_user, stk, chi_nhanh, timeNow, user_id, id]);
+    return res.status(200).json({
+        message: 'Cập nhật ngân hàng thành công',
+        status: true,
+        timeStamp: timeNow,
+    });
+}
+
 const infoUserBank = async (req, res) => {
     let auth = req.cookies.auth;
     if (!auth) {
@@ -1260,5 +1323,7 @@ module.exports = {
     verifyCode,
     useRedenvelope,
     search,
-    listBankUserService
+    listBankUserService,
+    listBankUserServiceById,
+    updateBankUser
 }

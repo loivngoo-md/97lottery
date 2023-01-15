@@ -152,7 +152,7 @@
                                         <h5>Chỉnh sử thông tin</h5>
                                         <span class="pr-3">Tên người dùng </span>
                                         <input placeholder="Tên người dùng" id="username" class="pw-input input">
-                                        <button class="btn btn-primary btn-block mt-3 mx-10">
+                                        <button class="btn btn-primary btn-block mt-3 mx-10" id="updateUsername">
                                             Cập nhật thông tin 
                                         </button>
                                     </div>
@@ -163,16 +163,63 @@
                                     <div data-v-25d9c352="" class="box c-row c-row-between c-row-middle p-l-10">
                                         <h5>Chỉnh sử vai trò người dùng</h5>
                                         <span class="pr-3 mb-3">Vai trò người dùng </span>
-                                        <select class="form-select" id="bankCardSelect" style="width: 100%;padding: 5px; border: 1px solid #f5625d">
-                                            <option value="0"> Admin </option>
-                                            <option value="1"> User </option>
+                                        <select class="form-select" id="levelUserSelect" style="width: 100%;padding: 5px; border: 1px solid #f5625d">
+                                            <option value="1"> Admin </option>
+                                            <option value="0"> User </option>
                                         </select>
-                                        <button class="btn btn-primary btn-block mt-3 mx-10">
+                                        <button id="updateUserLevel" class="btn btn-primary btn-block mt-3 mx-10">
                                             Cập nhật thông tin 
                                         </button>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card card-primary card-outline">
+                                <div class="card-body">
+                                    <div data-v-25d9c352="" class="box c-row c-row-between c-row-middle p-l-10">
+                                        <h5>Chỉnh sử mật khẩu người dùng </h5>
+                                        <span class="pr-3 mb-3">Mật khẩu mới </span>
+                                        <input placeholder="Mật khẩu mới" id="password" type="password" class="pw-input input">
+                                        <button id="updateUserPassword" class="btn btn-primary btn-block mt-3 mx-10">
+                                            Cập nhật thông tin 
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-primary card-outline">
+                                <div class="card-body">
+                                    <div data-v-25d9c352="" class="box c-row c-row-between c-row-middle p-l-10">
+                                        <h5>Chỉnh sử thông tin thẻ ngân hàng</h5>
+                                        <span class="pr-3 mb-3">Chọn thẻ cần chỉnh sửa</span>
+                                        <div class="m-b-10" id="bankCardList">
+                                            <select class="form-select mb-4 " id="bankCardSelect" style="width: 100%;padding: 5px; border: 1px solid #f5625d">
+                                            
+                                            </select>
+                    
+                                        </div>
+                                        <div>
+                                            <div class="pr-3">Tên ngân hàng </div>
+                                            <input placeholder="Tên ngân hàng" id="name_bank"  class="form-control">
+                                        </div>
+                                        <div>
+                                            <div class="pr-3">Tên chủ tài khoản </div>
+                                            <input placeholder="Tên chủ tài khoản" id="name_user"  class="form-control">
+                                        </div>
+                                        <div>
+                                            <div class="pr-3">Số tài khoản </div>
+                                            <input placeholder="Số tài khoản" id="soTaiKhoan" class="form-control">
+                                        </div>
+                                        <div>
+                                            <div class="pr-3">Chi nhánh trực thuộc </div>
+                                            <input placeholder="Chi nhánh trực thuộc" id="chi_nhanh"  class="form-control">
+                                        </div>
+                                        <button id="updateUserBank" class="btn btn-primary btn-block mt-3 mx-10">
+                                            Cập nhật thông tin 
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                                    
+                            
                         </div> 
                     </div>
                 </div>
@@ -213,6 +260,7 @@
         let url = window.location.pathname;
         let phones = url.split('/');
         let phone = phones[phones.length - 1];
+        let user_id = 0;
         $.ajax({
             type: "POST",
             url: "/api/webapi/admin/member/info",
@@ -228,6 +276,7 @@
                 $('#telegram').text(response.telegram.telegram);
                 $('#telegram').attr('href', response.telegram.telegram);
                 $('#id_user').text("ID: " + user.id_user);
+                user_id = user.id_user;
                 $('#money').text(user.money + ".0");
                 $('#roses_all').text(user.roses_f + user.roses_f1 + '.0');
                 $('#roses_today').text(user.roses_today + '.0');
@@ -253,6 +302,7 @@
                     $('#timeAddBank').text(timerJoin(response.bank_user[0].time));
                 }
             }
+            
         });
     </script>
 
@@ -497,6 +547,21 @@
         },
         });
 
+        $.ajax({
+            type: "POST",
+            url: "/api/webapi/bank_card_list/<%=phone%>",
+            dataType: "json",
+            success: function (response) {
+                let data = response.data;
+                var options = ''
+                options += '<option selected value="">-------- Chọn bank card  --------</option>'
+                for (let i = 0; i < data.length; i++) { 
+                    options+= '<option value="' + data[i].id + '">' + 'Ngân hàng: ' + data[i].name_bank + ' - STK:' + data[i].stk   + '</option>'
+                }
+                $('#bankCardSelect').append(options);
+            }
+        });
+
         $('#nextRedenvelope').click(function (e) {
         pageno2 += limit2;
         e.preventDefault();
@@ -547,6 +612,22 @@
 
     <!-- BET-->
     <script>
+        function alertMess(text, sic) {
+            $('body').append(
+                `
+                <div data-v-1dcba851="" class="msg">
+                    <div data-v-1dcba851="" class="msg-content v-enter-active v-enter-to" style=""> ${text} </div>
+                </div>
+                `
+            );
+            setTimeout(() => {
+                $('.msg .msg-content').removeClass('v-enter-active v-enter-to');
+                $('.msg .msg-content').addClass('v-leave-active v-leave-to');
+                setTimeout(() => {
+                    $('.msg').remove();
+                }, 100);
+            }, 1000);
+        }
         const RenderBet = (datas) => {
             if (datas.length == 0) {
                 $('#list-bet').html(`
@@ -636,6 +717,94 @@
             }
         });
         });
+
+        $('#updateUsername').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: "/api/webapi/admin/updateUserPhone",
+            data: {
+            username: $('#username').val(),
+            user_id: user_id,
+            language: "vi",
+            },
+            dataType: "json",
+            success: function (response) {
+            alertMess('Thay đổi thông tin thành công!');
+            setTimeout(() => {
+                  location.reload();
+                }, 100);
+            }
+        });
+        });
+
+        $('#updateUserLevel').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: "/api/webapi/admin/updateUserRole",
+            data: {
+            level: $('#levelUserSelect').find(":selected").val(),
+            user_id: user_id,
+            language: "vi",
+            },
+            dataType: "json",
+            success: function (response) {
+            alertMess('Thay đổi thông tin thành công!');
+            setTimeout(() => {
+                  location.reload();
+                }, 100);
+            }
+        });
+        });
+
+        $('#updateUserPassword').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: "/api/webapi/admin/setPassword",
+            data: {
+            password:$('#password').val(),
+            user_id: user_id,
+            language: "vi",
+            },
+            dataType: "json",
+            success: function (response) {
+            alertMess('Thay đổi thông tin thành công!');
+            setTimeout(() => {
+                  location.reload();
+                }, 100);
+            }
+
+        });
+        });
+
+        $('#updateUserBank').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/api/webapi/admin/updateBankUser",
+                data: {
+                    id: $('#bankCardSelect').find(":selected").val(),
+                    user_id: user_id,
+                    stk: $('#soTaiKhoan').val(),
+                    name_bank: $('#name_bank').val(),
+                    name_user: $('#name_user').val(),
+                    chi_nhanh: $('#chi_nhanh').val(),
+                    language: "vi",
+                },
+                dataType: "json",
+                success: function (response) {
+                    if(response.status == true) {
+                    }
+                    setTimeout(() => {
+                        location.reload();
+                    }, 100);
+                }
+            });
+        });
+
+       
     </script>
     <!-- BET-->
 </body>
