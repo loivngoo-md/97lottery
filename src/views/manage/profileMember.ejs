@@ -237,21 +237,14 @@
         }
     </script>
     <script>
-        // let url = window.location.pathname;
-        // let urlSplit = url.split('/');
-        // let user_id = urlSplit[urlSplit.length - 1];
-
-        const url = new URL(window.location.href).searchParams;
-
-        const user_id = url.get('id');
-        const p = url.get('p');
-
+        let url = window.location.pathname;
+        let urlSplit = url.split('/');
+        let phone = urlSplit[urlSplit.length - 1];
         $.ajax({
             type: "POST",
             url: "/api/webapi/admin/member/info",
             data: {
-                user_id: id,
-                phone: p
+                phone: phone
             },
             dataType: "json",
             success: function (response) {

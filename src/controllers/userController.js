@@ -813,7 +813,7 @@ const listBankUserService = async (req, res) => {
     } else {
         const [lisBankInfo] = await connection.query('SELECT * FROM user_bank WHERE `user_id` = ?', [user[0].id_user])
         return res.status(200).json({
-            data: [lisBankInfo[0]],
+            data: lisBankInfo,
             user: user[0].id_user
         });
     }
