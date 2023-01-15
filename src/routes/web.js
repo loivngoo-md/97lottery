@@ -180,8 +180,7 @@ const initWebRouter = (app) => {
     router.get('/admin/manager/rechargeRecord', adminController.middlewareAdminController, adminController.rechargeRecord); // get info account
     router.get('/admin/manager/withdrawRecord', adminController.middlewareAdminController, adminController.withdrawRecord); // get info account
     router.get('/admin/manager/statistical', adminController.middlewareAdminController, adminController.statistical); // get info account
-    router.get('/admin/member/info/:id', adminController.middlewareAdminController, adminController.infoMember);
-    router.get('/admin/member/edit/:id', adminController.middlewareAdminController, adminController.editMember);
+    router.get('/admin/member/info', adminController.middlewareAdminController, adminController.infoMember);
 
     router.post('/api/webapi/admin/listMember', adminController.middlewareAdminController, adminController.listMember); // get info account
     router.post('/api/webapi/admin/listctv', adminController.middlewareAdminController, adminController.listCTV); // get info account
@@ -190,6 +189,9 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/rechargeDuyet', adminController.middlewareAdminController, adminController.rechargeDuyet); // get info account
     router.post('/api/webapi/admin/member/info', adminController.middlewareAdminController, adminController.userInfo); // get info account
     router.post('/api/webapi/admin/statistical', adminController.middlewareAdminController, adminController.statistical2); // get info account
+    router.patch('/api/webapi/admin/setPassword', adminController.setPassword); //set password for specify user
+    router.patch('/api/webapi/admin/updateUserPhone', adminController.updateUserPhone); //update user info phone
+    router.patch('/api/webapi/admin/updateUserRole', adminController.updateUserRole); //update user info role
 
     router.post('/api/webapi/admin/banned', adminController.middlewareAdminController, adminController.banned); // get info account
 

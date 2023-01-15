@@ -1767,6 +1767,15 @@ const updateUserPhone = async (req, res) => {
         });
     }
 
+    const isExistPhone = await connection.query('SELECT * FROM users WHERE id_user = ?, phone = ? ', [user_id, phone]);
+    if (isExistPhone) {
+        return res.status(200).json({
+            message: 'Phone is existed.',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
     const [user] = await connection.query('SELECT * FROM users WHERE id_user = ? ', [user_id]);
     if (user.length == 0) {
         return res.status(200).json({
