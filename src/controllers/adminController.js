@@ -1752,6 +1752,104 @@ const editResult2 = async (req, res) => {
 
 }
 
+const updateUserPhone = async (req, res) => {
+
+    const {
+        user_id,
+        phone
+    } = req.body
+
+    if (!user_id || !phone) {
+        return res.status(400).json({
+            message: 'Missing fields.',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [user] = await connection.query('SELECT * FROM users WHERE id_user = ? ', [user_id]);
+    if (user.length == 0) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+    await connection.query("UPDATE users set, phone = ? WHERE id_user = ?", [phone, user_id])
+    return res.status(200).json({
+        message: 'Cập  nhật thành công',
+        status: true,
+        data: null,
+    });
+}
+
+const updateUserRole = async (req, res) => {
+    const {
+        user_id,
+        level
+    } = req.body
+
+    if (!user_id || !level) {
+        return res.status(400).json({
+            message: 'Missing fields.',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [user] = await connection.query('SELECT * FROM users WHERE id_user = ? ', [user_id]);
+    if (user.length == 0) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+    await connection.query("UPDATE users set level = ? WHERE id_user = ?", [level, phone, phone, user_id])
+    return res.status(200).json({
+        message: 'Cập  nhật thành công',
+        status: true,
+        data: null,
+    });
+}
+
+const setPassword = async (req, res) => {
+    const {
+        password,
+        user_id
+    } = req.body;
+
+    if (password && user_id) {
+
+        const [user] = await connection.query('SELECT * FROM users WHERE id_user = ? ', [user_id]);
+        if (user.length == 0) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: timeNow,
+            });
+        }
+        let userInfo = user[0];
+        console.log("User================================.>>>>>>>>", userInfo)
+        console.log(md5(password), userInfo['id_user'])
+        await connection.query(`UPDATE users SET password = ? WHERE id_user = ?`, [md5(password), userInfo['id_user']]);
+
+        return res.status(200).json({
+            data: null,
+            success: true,
+            message: null,
+            timeStamp: timeNow
+        })
+    }
+
+    res.status(400).json({
+        data: null,
+        success: false,
+        message: 'Missing field.',
+        timeStamp: timeNow
+    })
+}
+
 module.exports = {
     adminPage,
     adminPage3,
@@ -1799,5 +1897,8 @@ module.exports = {
     listOrderOldK3,
     editResult,
     adminPageK3,
-    editMember
+    editMember,
+    setPassword,
+    updateUserRole,
+    updateUserPhone
 }
