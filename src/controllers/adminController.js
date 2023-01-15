@@ -49,11 +49,45 @@ const ctvPage = async (req, res) => {
 }
 
 const infoMember = async (req, res) => {
-    let phone = req.query.p;
-    return res.render("manage/profileMember.ejs", {
-        phone
-    });
+        <<
+        << << < HEAD
+        let phone = req.query.p; ===
+        === =
+        let phone = req.params.id; >>>
+        >>> > 2002 c2c6903eef99ddef0d4ccaaa30745a97d95b
+        return res.render("manage/profileMember.ejs", {
+            phone
+        });
+    }
+
+    <<
+    << << < HEAD
+const statistical = async (req, res) => {
+    return res.render("manage/statistical.ejs");
 }
+
+const rechargePage = async (req, res) => {
+    return res.render("manage/recharge.ejs");
+}
+
+const rechargeRecord = async (req, res) => {
+    return res.render("manage/rechargeRecord.ejs");
+}
+
+const withdraw = async (req, res) => {
+    return res.render("manage/withdraw.ejs");
+}
+
+const withdrawRecord = async (req, res) => {
+        return res.render("manage/withdrawRecord.ejs");
+    } ===
+    === =
+    const editMember = async (req, res) => {
+        let phone = req.params.id;
+        return res.render("manage/editMember.ejs", {
+            phone
+        });
+    }
 
 const statistical = async (req, res) => {
     return res.render("manage/statistical.ejs");
@@ -72,8 +106,9 @@ const withdraw = async (req, res) => {
 }
 
 const withdrawRecord = async (req, res) => {
-    return res.render("manage/withdrawRecord.ejs");
-}
+        return res.render("manage/withdrawRecord.ejs");
+    } >>>
+    >>> > 2002 c2c6903eef99ddef0d4ccaaa30745a97d95b
 const settings = async (req, res) => {
     return res.render("manage/settings.ejs");
 }
@@ -1893,5 +1928,4 @@ module.exports = {
     setPassword,
     updateUserPhone,
     updateUserRole
-
 }

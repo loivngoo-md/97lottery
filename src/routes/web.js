@@ -84,7 +84,6 @@ const initWebRouter = (app) => {
     router.put('/api/webapi/change/userInfo', middlewareController, userController.changeUser); // get info account
     router.put('/api/webapi/change/pass', middlewareController, userController.changePassword); // get info account
 
-
     // bet wingo
     router.post('/api/webapi/action/join', middlewareController, winGoController.betWinGo); // register
     router.post('/api/webapi/GetNoaverageEmerdList', middlewareController, winGoController.listOrderOld); // register
@@ -103,6 +102,7 @@ const initWebRouter = (app) => {
     router.get('/api/webapi/myTeam', middlewareController, userController.listMyTeam); // register
     router.get('/api/webapi/recharge/list', middlewareController, userController.listRecharge); // register
     router.get('/api/webapi/withdraw/list', middlewareController, userController.listWithdraw); // register
+    router.get('/api/webapi/bank_card/list', middlewareController, userController.listBankUserService); // register
     router.post('/api/webapi/recharge/check', middlewareController, userController.recharge2); // register
     router.post('/api/webapi/withdrawal', middlewareController, userController.withdrawal3); // register
     router.post('/api/webapi/callback_bank', middlewareController, userController.callback_bank); // register

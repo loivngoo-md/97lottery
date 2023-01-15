@@ -136,7 +136,8 @@
                         name_bank: name_bank,
                         name_user: name_user,
                         stk: stk,
-                        chi_nhanh: chi_nhanh
+                        chi_nhanh: chi_nhanh,
+                        user_id: user_id
                     },
                     dataType: "json",
                     success: function (response) {
@@ -151,6 +152,19 @@
                 alertMess('Vui lòng nhập đầy đủ thông tin', $(this));
             }
         });
+
+        let user_id = 0;
+        $.ajax({
+            type: "GET",
+            url: "/api/webapi/GetUserInfo",
+            dataType: "json",
+            success: function (response) {
+                let user = response.data;
+                user_id = user.id_user;
+            }
+        });
+       
+
     </script>
 </body>
 

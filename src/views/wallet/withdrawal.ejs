@@ -7555,8 +7555,15 @@
                     <!---->
                 </div>
                 <!---->
+             
                 <div data-v-25d9c352="" class="conBox m-t-5">
                     <div data-v-25d9c352="" class="des">Phương thức thanh toán</div>
+                    <div class="m-b-10" id="bankCardList">
+                        <select class="form-select mb-4 " id="bankCardSelect" style="width: 100%;padding: 5px; border: 1px solid #f5625d">
+                        
+                        </select>
+
+                    </div>
                     <div data-v-25d9c352="" class="box m-b-10">
                         <div data-v-25d9c352="">
                             <div data-v-25d9c352="" class="list">
@@ -7566,7 +7573,7 @@
                                 <div data-v-25d9c352="" class="add c-row c-row-middle-center m-t-10 m-b-10" onclick="location.href='/wallet/addBank'"><span
                                         data-v-25d9c352="" class="plus c-row c-row-middle-center"><i data-v-25d9c352=""
                                             class="van-icon van-icon-plus"
-                                            style="color: rgb(245, 98, 93); font-size: 14px;">
+                                            style="color: #f5625d; font-size: 14px;">
                                             <!---->
                                         </i></span> Thêm vào BankCard </div>
                             </div>
@@ -7692,6 +7699,7 @@
             e.preventDefault();
             let money = $('input:eq(0)').val().trim();
             let password = $('input:eq(1)').val().trim();
+            var bankCardId = $('#bankCardSelect').find(":selected").val();
             if (money && password && money >= 200000) {
                 $.ajax({
                     type: "POST",
@@ -7699,6 +7707,7 @@
                     data: {
                         money: money,
                         password: password,
+                        bankCardId: bankCardId
                     },
                     dataType: "json",
                     success: function (response) {
@@ -7715,6 +7724,21 @@
             } else {
                 $(this).addClass('block-click');
                 alertMess('Phạm vi số tiền rút 200000-20000000', $(this));
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/api/webapi/bank_card/list",
+            dataType: "json",
+            success: function (response) {
+                let data = response.data;
+                var options = ''
+                options += '<option selected value="">-------- Chọn bank card  --------</option>'
+                for (let i = 0; i < data.length; i++) { 
+                    options+= '<option value="' + data[i].id + '">' + 'Ngân hàng: ' + data[i].name_bank + ' - STK:' + data[i].stk   + '</option>'
+                }
+                $('#bankCardSelect').append(options);
             }
         });
     </script>
