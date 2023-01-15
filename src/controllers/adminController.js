@@ -5,78 +5,89 @@ require('dotenv').config();
 
 let timeNow = Date.now();
 
-const adminPage = async(req, res) => {
-    return res.render("manage/index.ejs"); 
+const adminPage = async (req, res) => {
+    return res.render("manage/index.ejs");
 }
 
-const adminPage3 = async(req, res) => {
-    return res.render("manage/a-index-bet/index3.ejs"); 
+const adminPage3 = async (req, res) => {
+    return res.render("manage/a-index-bet/index3.ejs");
 }
 
-const adminPage5 = async(req, res) => {
-    return res.render("manage/a-index-bet/index5.ejs"); 
+const adminPage5 = async (req, res) => {
+    return res.render("manage/a-index-bet/index5.ejs");
 }
 
-const adminPage10 = async(req, res) => {
-    return res.render("manage/a-index-bet/index10.ejs"); 
+const adminPage10 = async (req, res) => {
+    return res.render("manage/a-index-bet/index10.ejs");
 }
 
-const adminPage5d = async(req, res) => {
-    return res.render("manage/5d.ejs"); 
+const adminPage5d = async (req, res) => {
+    return res.render("manage/5d.ejs");
 }
 
-const adminPageK3 = async(req, res) => {
-    return res.render("manage/k3.ejs"); 
+const adminPageK3 = async (req, res) => {
+    return res.render("manage/k3.ejs");
 }
 
-const ctvProfilePage = async(req, res) => {
+const ctvProfilePage = async (req, res) => {
     var phone = req.params.phone;
-    return res.render("manage/profileCTV.ejs", {phone}); 
+    return res.render("manage/profileCTV.ejs", {
+        phone
+    });
 }
 
-const giftPage = async(req, res) => {
-    return res.render("manage/giftPage.ejs"); 
+const giftPage = async (req, res) => {
+    return res.render("manage/giftPage.ejs");
 }
 
-const membersPage = async(req, res) => {
-    return res.render("manage/members.ejs"); 
+const membersPage = async (req, res) => {
+    return res.render("manage/members.ejs");
 }
 
-const ctvPage = async(req, res) => {
-    return res.render("manage/ctv.ejs"); 
+const ctvPage = async (req, res) => {
+    return res.render("manage/ctv.ejs");
 }
 
-const infoMember = async(req, res) => {
+const infoMember = async (req, res) => {
     let phone = req.params.id;
-    return res.render("manage/profileMember.ejs", {phone}); 
+    return res.render("manage/profileMember.ejs", {
+        phone
+    });
 }
 
-const statistical = async(req, res) => {
-    return res.render("manage/statistical.ejs"); 
+const editMember = async (req, res) => {
+    let phone = req.params.id;
+    return res.render("manage/editMember.ejs", {
+        phone
+    });
 }
 
-const rechargePage = async(req, res) => {
-    return res.render("manage/recharge.ejs"); 
+const statistical = async (req, res) => {
+    return res.render("manage/statistical.ejs");
 }
 
-const rechargeRecord = async(req, res) => {
-    return res.render("manage/rechargeRecord.ejs"); 
+const rechargePage = async (req, res) => {
+    return res.render("manage/recharge.ejs");
 }
 
-const withdraw = async(req, res) => {
-    return res.render("manage/withdraw.ejs"); 
+const rechargeRecord = async (req, res) => {
+    return res.render("manage/rechargeRecord.ejs");
 }
 
-const withdrawRecord = async(req, res) => {
-    return res.render("manage/withdrawRecord.ejs"); 
+const withdraw = async (req, res) => {
+    return res.render("manage/withdraw.ejs");
 }
-const settings = async(req, res) => {
-    return res.render("manage/settings.ejs"); 
+
+const withdrawRecord = async (req, res) => {
+    return res.render("manage/withdrawRecord.ejs");
+}
+const settings = async (req, res) => {
+    return res.render("manage/settings.ejs");
 }
 
 
 // xác nhận admin
-const middlewareAdminController = async(req, res, next) => {
+const middlewareAdminController = async (req, res, next) => {
     // xác nhận token
     const auth = req.cookies.auth;
     if (!auth) {
@@ -101,7 +112,7 @@ const middlewareAdminController = async(req, res, next) => {
     }
 }
 
-const totalJoin = async(req, res) => {
+const totalJoin = async (req, res) => {
     let auth = req.cookies.auth;
     let typeid = req.body.typeid;
     if (!typeid) {
@@ -112,11 +123,11 @@ const totalJoin = async(req, res) => {
         });
     }
     let game = '';
-    if(typeid == '1') game = 'wingo';
-    if(typeid == '2') game = 'wingo3';
-    if(typeid == '3') game = 'wingo5';
-    if(typeid == '4') game = 'wingo10';
-    
+    if (typeid == '1') game = 'wingo';
+    if (typeid == '2') game = 'wingo3';
+    if (typeid == '3') game = 'wingo5';
+    if (typeid == '4') game = 'wingo10';
+
     const [rows] = await connection.query('SELECT * FROM users WHERE `token` = ? ', [auth]);
 
     if (rows.length > 0) {
@@ -143,8 +154,11 @@ const totalJoin = async(req, res) => {
     }
 }
 
-const listMember = async(req, res) => {
-    let {pageno, limit } = req.body;
+const listMember = async (req, res) => {
+    let {
+        pageno,
+        limit
+    } = req.body;
 
     if (!pageno || !limit) {
         return res.status(200).json({
@@ -177,8 +191,11 @@ const listMember = async(req, res) => {
     });
 }
 
-const listCTV = async(req, res) => {
-    let {pageno, pageto } = req.body;
+const listCTV = async (req, res) => {
+    let {
+        pageno,
+        pageto
+    } = req.body;
 
     if (!pageno || !pageto) {
         return res.status(200).json({
@@ -217,19 +234,19 @@ function formateT2(params) {
 function timerJoin2(params = '') {
     let date = '';
     if (params) {
-      date = new Date(Number(params));
+        date = new Date(Number(params));
     } else {
-      date = Date.now();
-      date = new Date(Number(date));
+        date = Date.now();
+        date = new Date(Number(date));
     }
     let years = formateT2(date.getFullYear());
     let months = formateT2(date.getMonth() + 1);
     let days = formateT2(date.getDate());
-    
+
     return years + "-" + months + "-" + days;
 }
 
-const statistical2 = async(req, res) => {
+const statistical2 = async (req, res) => {
     const [wingo] = await connection.query(`SELECT SUM(money) as total FROM minutes_1 WHERE status = 1 `);
     const [wingo2] = await connection.query(`SELECT SUM(money) as total FROM minutes_1 WHERE status = 2 `);
     const [users] = await connection.query(`SELECT COUNT(id) as total FROM users WHERE status = 1 `);
@@ -260,32 +277,32 @@ const statistical2 = async(req, res) => {
     });
 }
 
-const changeAdmin = async(req, res) => {
+const changeAdmin = async (req, res) => {
     let auth = req.cookies.auth;
     let value = req.body.value;
     let type = req.body.type;
     let typeid = req.body.typeid;
 
-    if(!value || !type ||!typeid) return res.status(200).json({
+    if (!value || !type || !typeid) return res.status(200).json({
         message: 'Failed',
         status: false,
         timeStamp: timeNow,
     });;
     let game = '';
     let bs = '';
-    if(typeid == '1') {
+    if (typeid == '1') {
         game = 'wingo1';
         bs = 'bs1';
     }
-    if(typeid == '2') {
+    if (typeid == '2') {
         game = 'wingo3';
         bs = 'bs3';
     }
-    if(typeid == '3') {
+    if (typeid == '3') {
         game = 'wingo5';
         bs = 'bs5';
     }
-    if(typeid == '4') {
+    if (typeid == '4') {
         game = 'wingo10';
         bs = 'bs10';
     }
@@ -298,7 +315,7 @@ const changeAdmin = async(req, res) => {
                 timeStamp: timeNow,
             });
             break;
-        case 'change-win_rate': 
+        case 'change-win_rate':
             await connection.query(`UPDATE admin SET ${bs} = ? `, [value]);
             return res.status(200).json({
                 message: 'Editing win rate successfully',
@@ -306,7 +323,7 @@ const changeAdmin = async(req, res) => {
                 timeStamp: timeNow,
             });
             break;
-    
+
         default:
             return res.status(200).json({
                 message: 'Failed',
@@ -326,31 +343,31 @@ function formateT(params) {
 function timerJoin(params = '') {
     let date = '';
     if (params) {
-      date = new Date(Number(params));
+        date = new Date(Number(params));
     } else {
-      date = Date.now();
-      date = new Date(Number(date));
+        date = Date.now();
+        date = new Date(Number(date));
     }
     let years = formateT(date.getFullYear());
     let months = formateT(date.getMonth() + 1);
     let days = formateT(date.getDate());
     let weeks = formateT(date.getDay());
-  
+
     let hours = formateT(date.getHours());
     let minutes = formateT(date.getMinutes());
     let seconds = formateT(date.getSeconds());
     // return years + '-' + months + '-' + days + ' ' + hours + '-' + minutes + '-' + seconds;
     return years + " - " + months + " - " + days;
-  }
+}
 
 
-const userInfo = async(req, res) => {
+const userInfo = async (req, res) => {
     let auth = req.cookies.auth;
     let phone = req.body.phone;
     if (!phone) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
@@ -360,7 +377,7 @@ const userInfo = async(req, res) => {
     if (user.length == 0) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
@@ -373,7 +390,7 @@ const userInfo = async(req, res) => {
     for (let i = 0; i < f1s.length; i++) {
         const f1_time = f1s[i].time; // Mã giới thiệu f1
         let check = (timerJoin(f1_time) == timerJoin()) ? true : false;
-        if(check) {
+        if (check) {
             f1_today += 1;
         }
     }
@@ -384,34 +401,34 @@ const userInfo = async(req, res) => {
         const f1_code = f1s[i].code; // Mã giới thiệu f1
         const f1_time = f1s[i].time; // time f1
         let check_f1 = (timerJoin(f1_time) == timerJoin()) ? true : false;
-        if(check_f1) f_all_today += 1;
+        if (check_f1) f_all_today += 1;
         // tổng f1 mời đc hôm nay
         const [f2s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f1_code]);
         for (let i = 0; i < f2s.length; i++) {
             const f2_code = f2s[i].code; // Mã giới thiệu f2
             const f2_time = f2s[i].time; // time f2
             let check_f2 = (timerJoin(f2_time) == timerJoin()) ? true : false;
-            if(check_f2) f_all_today += 1;
+            if (check_f2) f_all_today += 1;
             // tổng f2 mời đc hôm nay
             const [f3s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f2_code]);
             for (let i = 0; i < f3s.length; i++) {
                 const f3_code = f3s[i].code; // Mã giới thiệu f3
                 const f3_time = f3s[i].time; // time f3
                 let check_f3 = (timerJoin(f3_time) == timerJoin()) ? true : false;
-                if(check_f3) f_all_today += 1;
+                if (check_f3) f_all_today += 1;
                 const [f4s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f3_code]);
                 // tổng f3 mời đc hôm nay
                 for (let i = 0; i < f4s.length; i++) {
                     const f4_code = f4s[i].code; // Mã giới thiệu f4
                     const f4_time = f4s[i].time; // time f4
                     let check_f4 = (timerJoin(f4_time) == timerJoin()) ? true : false;
-                    if(check_f4) f_all_today += 1;
+                    if (check_f4) f_all_today += 1;
                     // tổng f3 mời đc hôm nay
                 }
             }
         }
     }
-    
+
     // Tổng số f2
     let f2 = 0;
     for (let i = 0; i < f1s.length; i++) {
@@ -419,7 +436,7 @@ const userInfo = async(req, res) => {
         const [f2s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f1_code]);
         f2 += f2s.length;
     }
-    
+
     // Tổng số f3
     let f3 = 0;
     for (let i = 0; i < f1s.length; i++) {
@@ -428,10 +445,10 @@ const userInfo = async(req, res) => {
         for (let i = 0; i < f2s.length; i++) {
             const f2_code = f2s[i].code;
             const [f3s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f2_code]);
-            if(f3s.length > 0) f3 += f3s.length;
+            if (f3s.length > 0) f3 += f3s.length;
         }
     }
-    
+
     // Tổng số f4
     let f4 = 0;
     for (let i = 0; i < f1s.length; i++) {
@@ -443,7 +460,7 @@ const userInfo = async(req, res) => {
             for (let i = 0; i < f3s.length; i++) {
                 const f3_code = f3s[i].code;
                 const [f4s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f3_code]);
-                if(f4s.length > 0) f4 += f4s.length;
+                if (f4s.length > 0) f4 += f4s.length;
             }
         }
     }
@@ -477,7 +494,7 @@ const userInfo = async(req, res) => {
 
 
 
-const recharge = async(req, res) => {
+const recharge = async (req, res) => {
     let auth = req.cookies.auth;
     if (!auth) {
         return res.status(200).json({
@@ -501,7 +518,7 @@ const recharge = async(req, res) => {
     });
 }
 
-const settingGet = async(req, res) => {
+const settingGet = async (req, res) => {
     let auth = req.cookies.auth;
     if (!auth) {
         return res.status(200).json({
@@ -521,7 +538,7 @@ const settingGet = async(req, res) => {
     });
 }
 
-const rechargeDuyet = async(req, res) => {
+const rechargeDuyet = async (req, res) => {
     let auth = req.cookies.auth;
     let id = req.body.id;
     let type = req.body.type;
@@ -553,13 +570,13 @@ const rechargeDuyet = async(req, res) => {
     }
 }
 
-const handlWithdraw = async(req, res) => {
+const handlWithdraw = async (req, res) => {
     let auth = req.cookies.auth;
     let id = req.body.id;
     let type = req.body.type;
     if (!auth || !id || !type) {
         return res.status(200).json({
-            message: 'Failed', 
+            message: 'Failed',
             status: false,
             timeStamp: timeNow,
         });
@@ -585,7 +602,7 @@ const handlWithdraw = async(req, res) => {
     }
 }
 
-const settingBank = async(req, res) => {
+const settingBank = async (req, res) => {
     let auth = req.cookies.auth;
     let name_bank = req.body.name_bank;
     let name = req.body.name;
@@ -616,7 +633,7 @@ const settingBank = async(req, res) => {
     }
 }
 
-const settingCskh = async(req, res) => {
+const settingCskh = async (req, res) => {
     let auth = req.cookies.auth;
     let telegram = req.body.telegram;
     let cskh = req.body.cskh;
@@ -635,7 +652,7 @@ const settingCskh = async(req, res) => {
     });
 }
 
-const banned = async(req, res) => {
+const banned = async (req, res) => {
     let auth = req.cookies.auth;
     let id = req.body.id;
     let type = req.body.type;
@@ -659,7 +676,7 @@ const banned = async(req, res) => {
 }
 
 
-const createBonus = async(req, res) => {
+const createBonus = async (req, res) => {
     const randomString = (length) => {
         var result = '';
         var characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -670,19 +687,20 @@ const createBonus = async(req, res) => {
         }
         return result;
     }
+
     function timerJoin(params = '') {
         let date = '';
         if (params) {
-          date = new Date(Number(params));
+            date = new Date(Number(params));
         } else {
-          date = Date.now();
-          date = new Date(Number(date));
+            date = Date.now();
+            date = new Date(Number(date));
         }
         let years = formateT(date.getFullYear());
         let months = formateT(date.getMonth() + 1);
         let days = formateT(date.getDate());
         let weeks = formateT(date.getDay());
-      
+
         let hours = formateT(date.getHours());
         let minutes = formateT(date.getMinutes());
         let seconds = formateT(date.getSeconds());
@@ -709,7 +727,7 @@ const createBonus = async(req, res) => {
     if (user.length == 0) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
@@ -726,7 +744,7 @@ const createBonus = async(req, res) => {
             message: '成功的改变',
             status: true,
         });
-    } 
+    }
 
     if (type == 'two') {
         let select = req.body.select;
@@ -739,19 +757,19 @@ const createBonus = async(req, res) => {
             message: '成功的改变',
             status: true,
         });
-    } 
-  
+    }
+
     if (type == 'one') {
         let select = req.body.select;
         let phone = req.body.phone;
         const [user] = await connection.query('SELECT * FROM point_list WHERE phone = ? ', [phone]);
-        if(user.length == 0) {
+        if (user.length == 0) {
             return res.status(200).json({
                 message: 'Failed',
-                status: false, 
+                status: false,
                 timeStamp: timeNow,
             });
-        } 
+        }
         if (select == '1') {
             await connection.query(`UPDATE point_list SET money = money + ? WHERE level = 2 and phone = ?`, [money, phone]);
         } else {
@@ -767,13 +785,13 @@ const createBonus = async(req, res) => {
         let select = req.body.select;
         let phone = req.body.phone;
         const [user] = await connection.query('SELECT * FROM point_list WHERE phone = ? ', [phone]);
-        if(user.length == 0) {
+        if (user.length == 0) {
             return res.status(200).json({
                 message: '帐号不存在',
-                status: false, 
+                status: false,
                 timeStamp: timeNow,
             });
-        } 
+        }
         if (select == '1') {
             await connection.query(`UPDATE point_list SET money_us = money_us + ? WHERE level = 2 and phone = ?`, [money, phone]);
         } else {
@@ -797,7 +815,7 @@ const createBonus = async(req, res) => {
     }
 }
 
-const listRedenvelops = async(req, res) => {
+const listRedenvelops = async (req, res) => {
     let auth = req.cookies.auth;
 
     let [redenvelopes] = await connection.query('SELECT * FROM redenvelopes WHERE status = 0 ');
@@ -808,7 +826,7 @@ const listRedenvelops = async(req, res) => {
     });
 }
 
-const settingbuff = async(req, res) => {
+const settingbuff = async (req, res) => {
     let auth = req.cookies.auth;
     let id_user = req.body.id_user;
     let buff_acc = req.body.buff_acc;
@@ -872,11 +890,15 @@ const timeCreate = () => {
     const time = d.getTime();
     return time;
 }
- 
 
 
-const register = async(req, res) => {
-    let { username, password, invitecode } = req.body;
+
+const register = async (req, res) => {
+    let {
+        username,
+        password,
+        invitecode
+    } = req.body;
     let id_user = randomNumber(10000, 99999);
     let name_user = "Member" + randomNumber(10000, 99999);
     let code = randomString(5) + randomNumber(10000, 99999);
@@ -923,7 +945,7 @@ const register = async(req, res) => {
             await connection.execute(sql, [id_user, username, name_user, md5(password), 0, 2, code, invitecode, 1, ip, 1, time]);
             await connection.execute('INSERT INTO point_list SET phone = ?, level = 2', [username]);
             return res.status(200).json({
-                message: '注册成功',//Register Sucess
+                message: '注册成功', //Register Sucess
                 status: true
             });
         }
@@ -933,7 +955,7 @@ const register = async(req, res) => {
 
 }
 
-const profileUser = async(req, res) => {
+const profileUser = async (req, res) => {
     let phone = req.body.phone;
     if (!phone) {
         return res.status(200).json({
@@ -961,9 +983,9 @@ const profileUser = async(req, res) => {
     });
 }
 
-const infoCtv = async(req, res) => {
+const infoCtv = async (req, res) => {
     const phone = req.body.phone;
-     
+
     const [user] = await connection.query('SELECT * FROM users WHERE phone = ? ', [phone]);
 
     if (user.length == 0) {
@@ -981,7 +1003,7 @@ const infoCtv = async(req, res) => {
     for (let i = 0; i < f1s.length; i++) {
         const f1_time = f1s[i].time; // Mã giới thiệu f1
         let check = (timerJoin(f1_time) == timerJoin()) ? true : false;
-        if(check) {
+        if (check) {
             f1_today += 1;
         }
     }
@@ -992,34 +1014,34 @@ const infoCtv = async(req, res) => {
         const f1_code = f1s[i].code; // Mã giới thiệu f1
         const f1_time = f1s[i].time; // time f1
         let check_f1 = (timerJoin(f1_time) == timerJoin()) ? true : false;
-        if(check_f1) f_all_today += 1;
+        if (check_f1) f_all_today += 1;
         // tổng f1 mời đc hôm nay
         const [f2s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f1_code]);
         for (let i = 0; i < f2s.length; i++) {
             const f2_code = f2s[i].code; // Mã giới thiệu f2
             const f2_time = f2s[i].time; // time f2
             let check_f2 = (timerJoin(f2_time) == timerJoin()) ? true : false;
-            if(check_f2) f_all_today += 1;
+            if (check_f2) f_all_today += 1;
             // tổng f2 mời đc hôm nay
             const [f3s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f2_code]);
             for (let i = 0; i < f3s.length; i++) {
                 const f3_code = f3s[i].code; // Mã giới thiệu f3
                 const f3_time = f3s[i].time; // time f3
                 let check_f3 = (timerJoin(f3_time) == timerJoin()) ? true : false;
-                if(check_f3) f_all_today += 1;
+                if (check_f3) f_all_today += 1;
                 const [f4s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f3_code]);
                 // tổng f3 mời đc hôm nay
                 for (let i = 0; i < f4s.length; i++) {
                     const f4_code = f4s[i].code; // Mã giới thiệu f4
                     const f4_time = f4s[i].time; // time f4
                     let check_f4 = (timerJoin(f4_time) == timerJoin()) ? true : false;
-                    if(check_f4) f_all_today += 1;
+                    if (check_f4) f_all_today += 1;
                     // tổng f3 mời đc hôm nay
                 }
             }
         }
     }
-    
+
     // Tổng số f2
     let f2 = 0;
     for (let i = 0; i < f1s.length; i++) {
@@ -1027,7 +1049,7 @@ const infoCtv = async(req, res) => {
         const [f2s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f1_code]);
         f2 += f2s.length;
     }
-    
+
     // Tổng số f3
     let f3 = 0;
     for (let i = 0; i < f1s.length; i++) {
@@ -1036,10 +1058,10 @@ const infoCtv = async(req, res) => {
         for (let i = 0; i < f2s.length; i++) {
             const f2_code = f2s[i].code;
             const [f3s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f2_code]);
-            if(f3s.length > 0) f3 += f3s.length;
+            if (f3s.length > 0) f3 += f3s.length;
         }
     }
-    
+
     // Tổng số f4
     let f4 = 0;
     for (let i = 0; i < f1s.length; i++) {
@@ -1051,7 +1073,7 @@ const infoCtv = async(req, res) => {
             for (let i = 0; i < f3s.length; i++) {
                 const f3_code = f3s[i].code;
                 const [f4s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f3_code]);
-                if(f4s.length > 0) f4 += f4s.length;
+                if (f4s.length > 0) f4 += f4s.length;
             }
         }
     }
@@ -1174,7 +1196,7 @@ const infoCtv = async(req, res) => {
     return res.status(200).json({
         message: 'Success',
         status: true,
-        datas: user,    
+        datas: user,
         f1: f1s.length,
         f2: f2,
         f3: f3,
@@ -1195,30 +1217,30 @@ const infoCtv = async(req, res) => {
     });
 }
 
-const infoCtv2 = async(req, res) => {
+const infoCtv2 = async (req, res) => {
     const phone = req.body.phone;
     const timeDate = req.body.timeDate;
-     
+
     function timerJoin(params = '') {
         let date = '';
         if (params) {
-          date = new Date(Number(params));
+            date = new Date(Number(params));
         } else {
-          date = Date.now();
-          date = new Date(Number(date));
+            date = Date.now();
+            date = new Date(Number(date));
         }
         let years = formateT(date.getFullYear());
         let months = formateT(date.getMonth() + 1);
         let days = formateT(date.getDate());
         let weeks = formateT(date.getDay());
-      
+
         let hours = formateT(date.getHours());
         let minutes = formateT(date.getMinutes());
         let seconds = formateT(date.getSeconds());
         // return years + '-' + months + '-' + days + ' ' + hours + '-' + minutes + '-' + seconds;
         return years + "-" + months + "-" + days;
     }
-    
+
     const [user] = await connection.query('SELECT * FROM users WHERE phone = ? ', [phone]);
 
     if (user.length == 0) {
@@ -1294,67 +1316,13 @@ const infoCtv2 = async(req, res) => {
     });
 }
 
-const listRechargeMem = async(req, res) => {
+const listRechargeMem = async (req, res) => {
     let auth = req.cookies.auth;
     let phone = req.params.phone;
-    let {pageno, limit } = req.body;
-
-    if (!pageno || !limit) {
-        return res.status(200).json({
-            code: 0,
-            msg: "Không còn dữ liệu",
-            data: {
-                gameslist: [],
-            },
-            status: false
-        });
-    }
-
-    if (pageno < 0 || limit < 0) {
-        return res.status(200).json({
-            code: 0,
-            msg: "Không còn dữ liệu",
-            data: {
-                gameslist: [],
-            },
-            status: false
-        });
-    }
-
-    if (!phone) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false, 
-            timeStamp: timeNow,
-        });
-    }
-
-    const [user] = await connection.query('SELECT * FROM users WHERE phone = ? ', [phone]);
-    const [auths] = await connection.query('SELECT * FROM users WHERE token = ? ', [auth]);
-
-    if (user.length == 0 || auths.length == 0) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false, 
-            timeStamp: timeNow,
-        });
-    }
-    let { token, password, otp, level,...userInfo } = user[0];
-
-    const [recharge] = await connection.query(`SELECT * FROM recharge WHERE phone = ? ORDER BY id DESC LIMIT ${pageno}, ${limit} `, [phone]);
-    const [total_users] = await connection.query(`SELECT * FROM recharge WHERE phone = ?`, [phone]);
-    return res.status(200).json({
-        message: 'Success',
-        status: true,
-        datas: recharge,
-        page_total: Math.ceil(total_users.length / limit)
-    });
-}
-
-const listWithdrawMem = async(req, res) => {
-    let auth = req.cookies.auth;
-    let phone = req.params.phone;
-    let {pageno, limit } = req.body;
+    let {
+        pageno,
+        limit
+    } = req.body;
 
     if (!pageno || !limit) {
         return res.status(200).json({
@@ -1392,11 +1360,83 @@ const listWithdrawMem = async(req, res) => {
     if (user.length == 0 || auths.length == 0) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
-    let { token, password, otp, level,...userInfo } = user[0];
+    let {
+        token,
+        password,
+        otp,
+        level,
+        ...userInfo
+    } = user[0];
+
+    const [recharge] = await connection.query(`SELECT * FROM recharge WHERE phone = ? ORDER BY id DESC LIMIT ${pageno}, ${limit} `, [phone]);
+    const [total_users] = await connection.query(`SELECT * FROM recharge WHERE phone = ?`, [phone]);
+    return res.status(200).json({
+        message: 'Success',
+        status: true,
+        datas: recharge,
+        page_total: Math.ceil(total_users.length / limit)
+    });
+}
+
+const listWithdrawMem = async (req, res) => {
+    let auth = req.cookies.auth;
+    let phone = req.params.phone;
+    let {
+        pageno,
+        limit
+    } = req.body;
+
+    if (!pageno || !limit) {
+        return res.status(200).json({
+            code: 0,
+            msg: "Không còn dữ liệu",
+            data: {
+                gameslist: [],
+            },
+            status: false
+        });
+    }
+
+    if (pageno < 0 || limit < 0) {
+        return res.status(200).json({
+            code: 0,
+            msg: "Không còn dữ liệu",
+            data: {
+                gameslist: [],
+            },
+            status: false
+        });
+    }
+
+    if (!phone) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [user] = await connection.query('SELECT * FROM users WHERE phone = ? ', [phone]);
+    const [auths] = await connection.query('SELECT * FROM users WHERE token = ? ', [auth]);
+
+    if (user.length == 0 || auths.length == 0) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+    let {
+        token,
+        password,
+        otp,
+        level,
+        ...userInfo
+    } = user[0];
 
     const [withdraw] = await connection.query(`SELECT * FROM withdraw WHERE phone = ? ORDER BY id DESC LIMIT ${pageno}, ${limit} `, [phone]);
     const [total_users] = await connection.query(`SELECT * FROM withdraw WHERE phone = ?`, [phone]);
@@ -1408,10 +1448,13 @@ const listWithdrawMem = async(req, res) => {
     });
 }
 
-const listRedenvelope = async(req, res) => {
+const listRedenvelope = async (req, res) => {
     let auth = req.cookies.auth;
     let phone = req.params.phone;
-    let {pageno, limit } = req.body;
+    let {
+        pageno,
+        limit
+    } = req.body;
 
     if (!pageno || !limit) {
         return res.status(200).json({
@@ -1438,7 +1481,7 @@ const listRedenvelope = async(req, res) => {
     if (!phone) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
@@ -1449,11 +1492,17 @@ const listRedenvelope = async(req, res) => {
     if (user.length == 0 || auths.length == 0) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
-    let { token, password, otp, level,...userInfo } = user[0];
+    let {
+        token,
+        password,
+        otp,
+        level,
+        ...userInfo
+    } = user[0];
 
     const [redenvelopes_used] = await connection.query(`SELECT * FROM redenvelopes_used WHERE phone_used = ? ORDER BY id DESC LIMIT ${pageno}, ${limit} `, [phone]);
     const [total_users] = await connection.query(`SELECT * FROM redenvelopes_used WHERE phone_used = ?`, [phone]);
@@ -1465,10 +1514,13 @@ const listRedenvelope = async(req, res) => {
     });
 }
 
-const listBet = async(req, res) => {
+const listBet = async (req, res) => {
     let auth = req.cookies.auth;
     let phone = req.params.phone;
-    let {pageno, limit } = req.body;
+    let {
+        pageno,
+        limit
+    } = req.body;
 
     if (!pageno || !limit) {
         return res.status(200).json({
@@ -1495,7 +1547,7 @@ const listBet = async(req, res) => {
     if (!phone) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
@@ -1506,11 +1558,17 @@ const listBet = async(req, res) => {
     if (user.length == 0 || auths.length == 0) {
         return res.status(200).json({
             message: 'Failed',
-            status: false, 
+            status: false,
             timeStamp: timeNow,
         });
     }
-    let { token, password, otp, level,...userInfo } = user[0];
+    let {
+        token,
+        password,
+        otp,
+        level,
+        ...userInfo
+    } = user[0];
 
     const [listBet] = await connection.query(`SELECT * FROM minutes_1 WHERE phone = ? AND status != 0 ORDER BY id DESC LIMIT ${pageno}, ${limit} `, [phone]);
     const [total_users] = await connection.query(`SELECT * FROM minutes_1 WHERE phone = ? AND status != 0`, [phone]);
@@ -1523,7 +1581,9 @@ const listBet = async(req, res) => {
 }
 
 const listOrderOld = async (req, res) => {
-    let { gameJoin } = req.body;
+    let {
+        gameJoin
+    } = req.body;
 
     let checkGame = ['1', '3', '5', '10'].includes(String(gameJoin));
     if (!checkGame) {
@@ -1539,10 +1599,10 @@ const listOrderOld = async (req, res) => {
     let game = Number(gameJoin);
 
     let join = '';
-    if(game == 1) join = 'k5d';
-    if(game == 3) join = 'k5d3';
-    if(game == 5) join = 'k5d5';
-    if(game == 10) join = 'k5d10';
+    if (game == 1) join = 'k5d';
+    if (game == 3) join = 'k5d3';
+    if (game == 5) join = 'k5d5';
+    if (game == 10) join = 'k5d10';
 
     const [k5d] = await connection.query(`SELECT * FROM 5d WHERE status != 0 AND game = '${game}' ORDER BY id DESC LIMIT 10 `);
     const [period] = await connection.query(`SELECT period FROM 5d WHERE status = 0 AND game = '${game}' ORDER BY id DESC LIMIT 1 `);
@@ -1579,7 +1639,9 @@ const listOrderOld = async (req, res) => {
 }
 
 const listOrderOldK3 = async (req, res) => {
-    let { gameJoin } = req.body;
+    let {
+        gameJoin
+    } = req.body;
 
     let checkGame = ['1', '3', '5', '10'].includes(String(gameJoin));
     if (!checkGame) {
@@ -1595,10 +1657,10 @@ const listOrderOldK3 = async (req, res) => {
     let game = Number(gameJoin);
 
     let join = '';
-    if(game == 1) join = 'k3d';
-    if(game == 3) join = 'k3d3';
-    if(game == 5) join = 'k3d5';
-    if(game == 10) join = 'k3d10';
+    if (game == 1) join = 'k3d';
+    if (game == 3) join = 'k3d3';
+    if (game == 5) join = 'k3d5';
+    if (game == 10) join = 'k3d10';
 
     const [k5d] = await connection.query(`SELECT * FROM k3 WHERE status != 0 AND game = '${game}' ORDER BY id DESC LIMIT 10 `);
     const [period] = await connection.query(`SELECT period FROM k3 WHERE status = 0 AND game = '${game}' ORDER BY id DESC LIMIT 1 `);
@@ -1634,8 +1696,11 @@ const listOrderOldK3 = async (req, res) => {
     });
 }
 
-const editResult = async(req, res) => {
-    let { game, list } = req.body;
+const editResult = async (req, res) => {
+    let {
+        game,
+        list
+    } = req.body;
 
     if (!list || !game) {
         return res.status(200).json({
@@ -1645,22 +1710,25 @@ const editResult = async(req, res) => {
     }
 
     let join = '';
-    if(game == 1) join = 'k5d';
-    if(game == 3) join = 'k5d3';
-    if(game == 5) join = 'k5d5';
-    if(game == 10) join = 'k5d10';
+    if (game == 1) join = 'k5d';
+    if (game == 3) join = 'k5d3';
+    if (game == 5) join = 'k5d5';
+    if (game == 10) join = 'k5d10';
 
     const sql = `UPDATE admin SET ${join} = ?`;
     await connection.execute(sql, [list]);
     return res.status(200).json({
-        message: 'Chỉnh sửa thành công',//Register Sucess
+        message: 'Chỉnh sửa thành công', //Register Sucess
         status: true
     });
 
 }
 
-const editResult2 = async(req, res) => {
-    let { game, list } = req.body;
+const editResult2 = async (req, res) => {
+    let {
+        game,
+        list
+    } = req.body;
 
     if (!list || !game) {
         return res.status(200).json({
@@ -1670,15 +1738,15 @@ const editResult2 = async(req, res) => {
     }
 
     let join = '';
-    if(game == 1) join = 'k3d';
-    if(game == 3) join = 'k3d3';
-    if(game == 5) join = 'k3d5';
-    if(game == 10) join = 'k3d10';
+    if (game == 1) join = 'k3d';
+    if (game == 3) join = 'k3d3';
+    if (game == 5) join = 'k3d5';
+    if (game == 10) join = 'k3d10';
 
     const sql = `UPDATE admin SET ${join} = ?`;
     await connection.execute(sql, [list]);
     return res.status(200).json({
-        message: 'Chỉnh sửa thành công',//Register Sucess
+        message: 'Chỉnh sửa thành công', //Register Sucess
         status: true
     });
 
@@ -1730,5 +1798,6 @@ module.exports = {
     listOrderOld,
     listOrderOldK3,
     editResult,
-    adminPageK3
+    adminPageK3,
+    editMember
 }
