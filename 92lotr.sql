@@ -27952,7 +27952,7 @@ INSERT INTO `users` (`id`, `id_user`, `phone`, `token`, `name_user`, `password`,
 
 CREATE TABLE `user_bank` (
   `id` int(11) NOT NULL,
-  `phone` varchar(50) NOT NULL DEFAULT '0',
+  `user_id` varchar(50) NOT NULL DEFAULT '',
   `name_bank` varchar(100) NOT NULL DEFAULT '0',
   `name_user` varchar(100) DEFAULT '0',
   `stk` varchar(100) NOT NULL DEFAULT '0',

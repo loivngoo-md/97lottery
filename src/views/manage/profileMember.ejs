@@ -237,14 +237,21 @@
         }
     </script>
     <script>
-        let url = window.location.pathname;
-        let phones = url.split('/');
-        let phone = phones[phones.length - 1];
+        // let url = window.location.pathname;
+        // let urlSplit = url.split('/');
+        // let user_id = urlSplit[urlSplit.length - 1];
+
+        const url = new URL(window.location.href).searchParams;
+
+        const user_id = url.get('id');
+        const p = url.get('p');
+
         $.ajax({
             type: "POST",
             url: "/api/webapi/admin/member/info",
             data: {
-                phone: phone,
+                user_id: id,
+                phone: p
             },
             dataType: "json",
             success: function (response) {
@@ -703,7 +710,8 @@
             if (id && name_bank && name_user && stk && chi_nhanh) {
                 // $.ajax({
                 //     type: "POST",
-                //     url: "/api/webapi/addBank",
+                //     url: "user_id",
+                //     //cho nay de t viet them api update bank
                 //     data: {
                 //         name_bank: name_bank,
                 //         name_user: name_user,
